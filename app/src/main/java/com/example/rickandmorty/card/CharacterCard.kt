@@ -1,0 +1,90 @@
+package com.example.rickandmorty.card
+
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import com.example.rickandmorty.mmodel.Result
+
+@Composable
+fun CharacterCard(
+    characterItem: Result,
+    navController: NavController
+) {
+    Column (
+        modifier = Modifier
+            .border(1.dp, Color.Black, shape= RectangleShape)
+            .padding(2.dp)
+    ) {
+        Row (
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(2.dp)
+        ) {
+            // the link is like that bc if you look at the JSON its formatted like this: https://rickandmortyapi.com/api/character/avatar/2.jpeg
+            AsyncImage(
+                model = ImageRequest.Builder(
+                    LocalContext.current
+                ).data("https://rickandmortyapi.com/api/character/avatar/${characterItem.id}.jpeg").build(),
+                contentDescription = characterItem.name
+            )
+
+            // Another way to write modifer = Modifier is to pass it directly
+            Column(Modifier.padding(20.dp)) {
+                characterItem.name?.let {
+                    Text(
+                        color = Color.Black,
+                        text = it,
+                        style = TextStyle(fontSize=16.sp),
+                        maxLines = 1
+                    )
+                }
+
+                characterItem.species?.let {
+                    Text(
+                        color = Color.Black,
+                        text = "Species: ${characterItem.species ?: ""}",
+                        style = TextStyle(fontSize=16.sp),
+                        maxLines = 1
+                    )
+                }
+
+                characterItem.gender?.let {
+                    Text(
+                        text = "Gender: ${characterItem.gender ?: ""}",
+                        color = Color.Black,
+                        style = TextStyle(fontSize=16.sp),
+                        maxLines = 1
+                    )
+                }
+
+                characterItem.status?.let {
+                    Text(
+                        color = Color.Black,
+                        text = "Status: ${characterItem.status ?: ""}",
+                        style = TextStyle(fontSize=16.sp),
+                        maxLines = 1
+                    )
+                }
+            }
+
+            // Add spacer
+            Spacer(modifier = Modifier.height(10.dp))
+        }
+    }
+}
