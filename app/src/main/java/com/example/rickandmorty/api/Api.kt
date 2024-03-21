@@ -7,7 +7,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 
 object Api {
-    private val BASE_URL = "https://rickandmortyapi.com/"
+    private val BASE_URL = "https://rickandmortyapi.com/api/"
 
     //moshi
     private val moshi = Moshi.Builder()

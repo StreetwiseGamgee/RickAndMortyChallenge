@@ -16,7 +16,7 @@ import retrofit2.Response
 
 class RickAndMortyManager(database: AppDataBase) {
     private var _rickAndMortyResponse = mutableStateOf<List<CastMember>>(emptyList())
-    val rickAndMortyURL: String = "https://rickandmortyapi.com/api/character"
+    //val rickAndMortyURL: String = "https://rickandmortyapi.com/api/character"
 
     val rickAndMortyResponse: MutableState<List<CastMember>>
         @Composable get() = remember {
@@ -38,13 +38,15 @@ class RickAndMortyManager(database: AppDataBase) {
             ) {
                 if (response.isSuccessful) {
                     Log.i("RickMortyManager", "API Response is successful")
+                    _rickAndMortyResponse.value = response.body()?.results ?: emptyList()
                     val characters = response.body()?.results
+
                     if (characters != null) {
                         Log.i("RickMortyManager", "Number of characters received: ${characters.size}")
                         for (character in characters) {
                             Log.i("RickMortyManager", "Character Name: ${character.name}")
                         }
-                        _rickAndMortyResponse.value = characters
+                        //_rickAndMortyResponse.value = characters
                         GlobalScope.launch {
                             saveDataToDatabase(database, characters)
                         }

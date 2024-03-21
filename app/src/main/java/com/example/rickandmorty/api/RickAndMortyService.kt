@@ -6,6 +6,6 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface RickAndMortyService {
-    @GET("api/character")
+    @GET("character")
     fun getCharacter(): Call<CastMemberData>
 }

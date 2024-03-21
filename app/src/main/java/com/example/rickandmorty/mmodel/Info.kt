@@ -12,5 +12,5 @@ data class Info(
     @Json(name = "pages")
     val pages: Int,
     @Json(name = "prev")
-    val prev: Any
+    val prev: Any? = null
 )
