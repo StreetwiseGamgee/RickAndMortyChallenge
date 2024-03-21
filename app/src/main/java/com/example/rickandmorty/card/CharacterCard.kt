@@ -19,11 +19,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.rickandmorty.mmodel.Result
+import com.example.rickandmorty.mmodel.CastMember
 
 @Composable
 fun CharacterCard(
-    characterItem: Result,
+    characterItem: CastMember,
     navController: NavController
 ) {
     Column (

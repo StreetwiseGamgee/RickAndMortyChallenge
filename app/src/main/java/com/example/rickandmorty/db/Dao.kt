@@ -4,13 +4,13 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.rickandmorty.mmodel.Result
+import com.example.rickandmorty.mmodel.CastMember
 
 @Dao
 interface Dao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllCharacters(characters: List<Result>?)
+    fun insertAllCharacters(characters: List<CastMember>?)
 
-    @Query("SELECT * FROM characters WHERE id = :id")
-    fun getCharacterById(id: Int): Result?
+    @Query("SELECT * FROM tbl_cast_members WHERE id = :id")
+    fun getCharacterById(id: Int): CastMember?
 }

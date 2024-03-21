@@ -4,9 +4,9 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class RickAndMorty(
+data class CastMemberData(
     @Json(name = "info")
-    val info: Info,
+    val info: Info? = null,
     @Json(name = "results")
-    val results: List<Result>
+    val results: List<CastMember>
 )

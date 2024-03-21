@@ -1,15 +1,15 @@
 package com.example.rickandmorty.api
 
 import androidx.compose.runtime.mutableStateOf
-import com.example.rickandmorty.mmodel.Result
+import com.example.rickandmorty.mmodel.CastMember
 
 class RickAndMortyViewModel {
-    private val _characters = mutableStateOf<List<Result>>(emptyList())
+    private val _characters = mutableStateOf<List<CastMember>>(emptyList())
 
-    val characters: List<Result>
+    val characters: List<CastMember>
         get() = _characters.value
 
-    fun updateCharacters(newCharacters: List<Result>) {
+    fun updateCharacters(newCharacters: List<CastMember>) {
         _characters.value = newCharacters
     }
 }

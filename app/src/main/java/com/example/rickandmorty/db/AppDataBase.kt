@@ -9,8 +9,9 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.rickandmorty.utility.Converter
 import com.example.rickandmorty.db.Dao
+import com.example.rickandmorty.mmodel.CastMember
 
-@Database(entities = [Result::class], version = 4, exportSchema = false)
+@Database(entities = [CastMember::class], version = 4, exportSchema = false)
 @TypeConverters(Converter::class)
 abstract class AppDataBase : RoomDatabase(){
 

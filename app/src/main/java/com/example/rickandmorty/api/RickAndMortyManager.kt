@@ -5,39 +5,36 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.rickandmorty.db.AppDataBase
-import kotlinx.coroutines.Dispatchers
+import com.example.rickandmorty.mmodel.CastMember
+import com.example.rickandmorty.mmodel.CastMemberData
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.example.rickandmorty.mmodel.Result
-import com.example.rickandmorty.mmodel.RickAndMorty
 
 class RickAndMortyManager(database: AppDataBase) {
-    private var _rickAndMorttyResponse = mutableStateOf<List<Result>>(emptyList())
+    private var _rickAndMortyResponse = mutableStateOf<List<CastMember>>(emptyList())
     val rickAndMortyURL: String = "https://rickandmortyapi.com/api/character"
 
-    val rickAndMortyResponse: MutableState<List<Result>>
+    val rickAndMortyResponse: MutableState<List<CastMember>>
         @Composable get() = remember {
-            _rickAndMorttyResponse
+            _rickAndMortyResponse
         }
 
     init {
         getRickAndMortyCharacters(database)
-
     }
+
     // grab api
-    private fun getRickAndMortyCharacters(database: AppDataBase){
+    private fun getRickAndMortyCharacters(database: AppDataBase) {
         val service = Api.retrofitService.getCharacter()
 
-        service.enqueue(object : Callback<RickAndMorty> {
+        service.enqueue(object : Callback<CastMemberData>{
             override fun onResponse(
-                call: Call<RickAndMorty>, response: Response<RickAndMorty>
+                call: Call<CastMemberData>,
+                response: Response<CastMemberData>
             ) {
                 if (response.isSuccessful) {
                     Log.i("RickMortyManager", "API Response is successful")
@@ -47,7 +44,7 @@ class RickAndMortyManager(database: AppDataBase) {
                         for (character in characters) {
                             Log.i("RickMortyManager", "Character Name: ${character.name}")
                         }
-                        _rickAndMorttyResponse.value = characters
+                        _rickAndMortyResponse.value = characters
                         GlobalScope.launch {
                             saveDataToDatabase(database, characters)
                         }
@@ -59,14 +56,15 @@ class RickAndMortyManager(database: AppDataBase) {
                 }
             }
 
-            override fun onFailure(call: Call<RickAndMorty>, t: Throwable) {
+            override fun onFailure(call: Call<CastMemberData>, t: Throwable) {
                 Log.e("RickMortyManager", "API call failed: ${t.message}")
             }
+
         })
     }
 
-    private suspend fun saveDataToDatabase(database: AppDataBase, data: List<Result>) {
+    private suspend fun saveDataToDatabase(database: AppDataBase, data: List<CastMember>) {
         database.dao().insertAllCharacters(data)
     }
-
 }
+
