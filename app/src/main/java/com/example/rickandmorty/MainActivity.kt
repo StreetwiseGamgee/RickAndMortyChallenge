@@ -5,14 +5,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -39,8 +38,8 @@ class MainActivity : ComponentActivity() {
                     var context: Context = LocalContext.current
                     val db = AppDataBase.getInstance(context)
                     val navController = rememberNavController()
-                    val RickAndMortyManager: RickAndMortyManager = RickAndMortyManager(db)
-                    RickMortyScaffold(navController = navController, rickMortyManager = RickAndMortyManager)
+                    val rickAndMortyManager: RickAndMortyManager = RickAndMortyManager(db)
+                    RickMortyScaffold(navController = navController, rickMortyManager = rickAndMortyManager)
                 }
             }
         }
@@ -51,15 +50,17 @@ class MainActivity : ComponentActivity() {
 fun RickMortyScaffold(navController: NavHostController, rickMortyManager: RickAndMortyManager) {
     Scaffold(
         bottomBar = {
-        }
-    ) {
-            paddingValues ->
-
-        //NavHost
-        NavHost(navController = navController, startDestination = Destination.RickAndMortyDestination.route){
-            composable(Destination.RickAndMortyDestination.route) {
-                RickAndMortyScreen(rickMortyManager, navController)
+        }, content = { innerPadding ->
+            //NavHost
+            NavHost(
+                navController = navController,
+                startDestination = Destination.RickAndMortyDestination.route,
+                modifier = Modifier.padding(innerPadding)
+                    ){
+                composable(Destination.RickAndMortyDestination.route) {
+                    RickAndMortyScreen(rickMortyManager, navController)
+                }
             }
         }
-    }
+    )
 }

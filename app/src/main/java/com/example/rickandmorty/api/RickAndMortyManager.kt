@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import com.example.rickandmorty.db.AppDataBase
 import com.example.rickandmorty.mmodel.CastMember
 import com.example.rickandmorty.mmodel.CastMemberData
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -28,6 +29,7 @@ class RickAndMortyManager(database: AppDataBase) {
     }
 
     // grab api
+    @OptIn(DelicateCoroutinesApi::class)
     private fun getRickAndMortyCharacters(database: AppDataBase) {
         val service = Api.retrofitService.getCharacter()
 
