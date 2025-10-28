@@ -1,18 +1,23 @@
 package com.example.rickandmorty.card
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.IconButton
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -20,6 +25,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.rickandmorty.mmodel.CastMember
+import com.example.rickandmorty.R
 
 @Composable
 fun CharacterCard(
@@ -80,9 +86,30 @@ fun CharacterCard(
                         style = TextStyle(fontSize=16.sp),
                         maxLines = 1
                     )
+
+                }
+
+                Row (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(2.dp),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    IconButton(onClick = {}) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_insert_icon),
+                            contentDescription = "Adjust character parameters."
+                        )
+                    }
+                    IconButton(onClick = {}) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_delete_icon),
+                            contentDescription = "Redact character from database."
+                        )
+                    }
+
                 }
             }
-
             // Add spacer
             Spacer(modifier = Modifier.height(10.dp))
         }
