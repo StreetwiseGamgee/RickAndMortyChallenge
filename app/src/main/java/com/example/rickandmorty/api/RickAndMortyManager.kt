@@ -67,6 +67,8 @@ class RickAndMortyManager(database: AppDataBase) {
         })
     }
 
+
+
     private suspend fun saveDataToDatabase(database: AppDataBase, data: List<CastMember>) {
         database.dao().insertAllCharacters(data)
     }

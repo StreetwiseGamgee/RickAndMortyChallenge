@@ -8,11 +8,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.IconButton
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
@@ -26,12 +29,20 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.rickandmorty.mmodel.CastMember
 import com.example.rickandmorty.R
+import com.example.rickandmorty.db.AppDataBase
+import com.example.rickandmorty.screens.DeleteCharacterDialog
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun CharacterCard(
     characterItem: CastMember,
     navController: NavController
 ) {
+    val context = LocalContext.current
+    var showDeleteDialog by remember { mutableStateOf(false) }
+
     Column (
         modifier = Modifier
             .border(1.dp, Color.Black, shape= RectangleShape)
@@ -95,23 +106,35 @@ fun CharacterCard(
                         .padding(2.dp),
                     horizontalArrangement = Arrangement.End
                 ) {
-                    IconButton(onClick = {}) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_insert_icon),
-                            contentDescription = "Adjust character parameters."
-                        )
-                    }
-                    IconButton(onClick = {}) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_delete_icon),
-                            contentDescription = "Redact character from database."
-                        )
-                    }
-
+                   DeleteButton( onClick = {showDeleteDialog = true} )
                 }
             }
             // Add spacer
             Spacer(modifier = Modifier.height(10.dp))
         }
+    }
+
+    if (showDeleteDialog) {
+        DeleteCharacterDialog(
+            character = characterItem,
+            onDismiss = { showDeleteDialog = false },
+            onConfirmDelete = {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val db = AppDataBase.getInstance(context)
+                    db.dao().purgeCharacter(characterItem.id)
+                }
+                showDeleteDialog = false
+            }
+        )
+    }
+
+}
+@Composable
+fun DeleteButton(onClick: () -> Unit) {
+    Button(onClick = onClick) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_delete_icon),
+            contentDescription = "Redact character from database."
+        )
     }
 }

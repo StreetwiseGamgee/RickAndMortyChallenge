@@ -13,4 +13,7 @@ interface Dao {
 
     @Query("SELECT * FROM tbl_cast_members WHERE id = :id")
     fun getCharacterById(id: Int): CastMember?
+
+    @Query("DELETE FROM tbl_cast_members WHERE id = :id")
+    fun purgeCharacter(id: Int)
 }
