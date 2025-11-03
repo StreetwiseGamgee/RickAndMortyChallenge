@@ -15,7 +15,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RickAndMortyManager(database: AppDataBase) {
+class RickAndMortyManager(private val database: AppDataBase) {
     private var _rickAndMortyResponse = mutableStateOf<List<CastMember>>(emptyList())
     //val rickAndMortyURL: String = "https://rickandmortyapi.com/api/character"
 
@@ -67,7 +67,11 @@ class RickAndMortyManager(database: AppDataBase) {
         })
     }
 
-
+    suspend fun refreshCastMembers() {
+       val castMembersFromDataBase = database.dao().getAllCharacters()
+        _rickAndMortyResponse.value = castMembersFromDataBase
+        Log.i("CIT", "Refreshed cast members successfully.")
+    }
 
     private suspend fun saveDataToDatabase(database: AppDataBase, data: List<CastMember>) {
         database.dao().insertAllCharacters(data)

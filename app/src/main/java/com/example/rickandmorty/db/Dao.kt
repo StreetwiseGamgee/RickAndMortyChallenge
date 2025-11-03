@@ -9,11 +9,14 @@ import com.example.rickandmorty.mmodel.CastMember
 @Dao
 interface Dao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllCharacters(characters: List<CastMember>?)
+    suspend fun insertAllCharacters(characters: List<CastMember>)
+
+    @Query("SELECT * FROM tbl_cast_members")
+    suspend fun getAllCharacters(): List<CastMember>
 
     @Query("SELECT * FROM tbl_cast_members WHERE id = :id")
-    fun getCharacterById(id: Int): CastMember?
+    suspend fun getCharacterById(id: Int): CastMember?
 
     @Query("DELETE FROM tbl_cast_members WHERE id = :id")
-    fun purgeCharacter(id: Int)
+    suspend fun purgeCharacter(id: Int)
 }

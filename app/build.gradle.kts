@@ -2,8 +2,9 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt") // kotlin annotation processing tool
-    //id("com.google.dagger.hilt.android")
-    //id("com.google.gms.google-services")
+//    id("com.google.dagger.hilt.android")
+//    id("com.google.gms.google-services")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -59,7 +60,7 @@ dependencies {
     val lifecycle_version = "2.5.1"
     val retrofit_version = "2.9.0"
     val hilt_version = "2.43.2"
-    val room_version = "2.4.2"
+    val room_version = "2.6.1"
     val compose_ui_version = "1.5.4"
 
     implementation("androidx.navigation:navigation-compose:$nav_version")

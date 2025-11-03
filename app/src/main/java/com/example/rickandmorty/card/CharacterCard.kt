@@ -29,6 +29,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.rickandmorty.mmodel.CastMember
 import com.example.rickandmorty.R
+import com.example.rickandmorty.api.RickAndMortyManager
 import com.example.rickandmorty.db.AppDataBase
 import com.example.rickandmorty.screens.DeleteCharacterDialog
 import kotlinx.coroutines.CoroutineScope
@@ -38,7 +39,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun CharacterCard(
     characterItem: CastMember,
-    navController: NavController
+    navController: NavController,
+    onCharacterDeleted: () -> Unit
 ) {
     val context = LocalContext.current
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -122,6 +124,7 @@ fun CharacterCard(
                 CoroutineScope(Dispatchers.IO).launch {
                     val db = AppDataBase.getInstance(context)
                     db.dao().purgeCharacter(characterItem.id)
+                    onCharacterDeleted()
                 }
                 showDeleteDialog = false
             }
