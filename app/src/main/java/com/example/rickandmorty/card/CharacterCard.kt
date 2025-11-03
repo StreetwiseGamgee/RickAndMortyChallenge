@@ -151,7 +151,7 @@ fun CharacterCard(
                     )
                     db.dao().updateCharacter(updatedCharacter)
                     onCharacterDeleted()
-                    Log.i("INSERTED:", "Character ${characterItem.name} to database.")
+                    Log.i("INSERTED:", "Character ${updatedCharacter.name} to database.")
                 }
                 showEditDialog = false
             }
