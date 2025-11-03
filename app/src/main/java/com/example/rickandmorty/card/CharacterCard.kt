@@ -1,5 +1,6 @@
 package com.example.rickandmorty.card
 
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,6 +33,7 @@ import com.example.rickandmorty.R
 import com.example.rickandmorty.api.RickAndMortyManager
 import com.example.rickandmorty.db.AppDataBase
 import com.example.rickandmorty.screens.DeleteCharacterDialog
+import com.example.rickandmorty.screens.EditCharacterDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,6 +46,8 @@ fun CharacterCard(
 ) {
     val context = LocalContext.current
     var showDeleteDialog by remember { mutableStateOf(false) }
+    var showEditDialog by remember { mutableStateOf(false) }
+
 
     Column (
         modifier = Modifier
@@ -109,6 +113,7 @@ fun CharacterCard(
                     horizontalArrangement = Arrangement.End
                 ) {
                    DeleteButton( onClick = {showDeleteDialog = true} )
+                   InsertButton( onClick = {showEditDialog = true} )
                 }
             }
             // Add spacer
@@ -123,10 +128,32 @@ fun CharacterCard(
             onConfirmDelete = {
                 CoroutineScope(Dispatchers.IO).launch {
                     val db = AppDataBase.getInstance(context)
-                    db.dao().purgeCharacter(characterItem.id)
+                    db.dao().purgeCharacter(characterItem)
                     onCharacterDeleted()
+                    Log.i("DELETED:", "Character ${characterItem.name} from database.")
                 }
                 showDeleteDialog = false
+            }
+        )
+    }
+
+    if (showEditDialog) {
+        EditCharacterDialog(
+            character = characterItem,
+            onDismiss = { showEditDialog = false },
+            onConfirmEdit = { name, species, gender ->
+                CoroutineScope(Dispatchers.IO).launch {
+                    val db = AppDataBase.getInstance(context)
+                    val updatedCharacter = characterItem.copy(
+                        name = name,
+                        species = species,
+                        gender = gender
+                    )
+                    db.dao().updateCharacter(updatedCharacter)
+                    onCharacterDeleted()
+                    Log.i("INSERTED:", "Character ${characterItem.name} to database.")
+                }
+                showEditDialog = false
             }
         )
     }
@@ -138,6 +165,16 @@ fun DeleteButton(onClick: () -> Unit) {
         Icon(
             painter = painterResource(id = R.drawable.ic_delete_icon),
             contentDescription = "Redact character from database."
+        )
+    }
+}
+
+@Composable
+fun InsertButton(onClick: () -> Unit) {
+    Button(onClick = onClick) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_insert_icon),
+            contentDescription = "Edit character from database"
         )
     }
 }
